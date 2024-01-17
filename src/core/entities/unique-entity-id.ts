@@ -1,17 +1,17 @@
-import { randomUUID } from "crypto"
+import { randomUUID } from 'crypto'
 
 export class UniqueEntityID {
-    private value: string
+  private value: string
 
-    toString(): string {
-        return this.value
-    }
+  toString(): string {
+    return this.value
+  }
 
-    toValue(): string {
-        return this.value
-    }
-    
-    constructor(value?:string){
-        this.value = value ?? randomUUID()
-    }
+  toValue(): string {
+    return this.value
+  }
+
+  constructor(value?: string) {
+    this.value = value ?? randomUUID()
+  }
 }

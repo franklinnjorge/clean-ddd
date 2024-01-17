@@ -1,7 +1,6 @@
-import { expect, test, vitest } from "vitest";
-import { Slug } from "./slug";
+import { Slug } from './slug'
 
 test('Slug Test', () => {
-    const newSlug = Slug.createFromText('an example title')
-    expect(newSlug.value).toEqual('an-example-title')
+  const newSlug = Slug.createFromText('an example title')
+  expect(newSlug.value).toEqual('an-example-title')
 })

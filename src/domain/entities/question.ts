@@ -1,21 +1,21 @@
-import { randomUUID } from "node:crypto"
-import { Slug } from "./value-objects/slug"
-import { Entity } from "../../core/entities/entity"
-import { UniqueEntityID } from "../../core/entities/unique-entity-id"
-import { Optional } from "../../core/types/optional"
+/* eslint-disable accessor-pairs */
+/* eslint-disable @typescript-eslint/adjacent-overload-signatures */
+import { Slug } from './value-objects/slug'
+import { Entity } from '../../core/entities/entity'
+import { UniqueEntityID } from '../../core/entities/unique-entity-id'
+import { Optional } from '../../core/types/optional'
 
 interface QuestionProps {
-    authorId: UniqueEntityID
-    bestAnswerId?: UniqueEntityID
-    title: string
-    content: string
-    slug: Slug
-    createdAt: Date
-    updatedAt?: Date
-  }
+  authorId: UniqueEntityID
+  bestAnswerId?: UniqueEntityID
+  title: string
+  content: string
+  slug: Slug
+  createdAt: Date
+  updatedAt?: Date
+}
 
-export class Question extends Entity<QuestionProps>{
-
+export class Question extends Entity<QuestionProps> {
   get authorId() {
     return this.props.authorId
   }
@@ -29,7 +29,7 @@ export class Question extends Entity<QuestionProps>{
   }
 
   get slug() {
-    return this.props.slug 
+    return this.props.slug
   }
 
   get createdAt() {
@@ -55,6 +55,7 @@ export class Question extends Entity<QuestionProps>{
     this.touch()
   }
 
+  // eslint-disable-next-line @typescript-eslint/adjacent-overload-signatures
   set bestAnswerId(bestAnswerId: UniqueEntityID | undefined) {
     this.props.bestAnswerId = bestAnswerId
     this.touch()
@@ -64,12 +65,18 @@ export class Question extends Entity<QuestionProps>{
     this.props.updatedAt = new Date()
   }
 
-  static create(props: Optional<QuestionProps, 'createdAt' | 'slug'>, id?: UniqueEntityID) {
-    const question = new Question({
-      ...props,
-      slug: props.slug ?? Slug.createFromText(props.title),
-      createdAt: new Date(),
-    }, id)
+  static create(
+    props: Optional<QuestionProps, 'createdAt' | 'slug'>,
+    id?: UniqueEntityID,
+  ) {
+    const question = new Question(
+      {
+        ...props,
+        slug: props.slug ?? Slug.createFromText(props.title),
+        createdAt: new Date(),
+      },
+      id,
+    )
 
     return question
   }
