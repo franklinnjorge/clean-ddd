@@ -1,9 +1,7 @@
+import { makeQuestion } from 'test/factories/make-question'
 import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
-import { CreateQuestionUseCase } from './creation-question'
-import { GetQuestionBySlugUseCase } from './get-question-by-slug'
-import { Question } from '../../enterprise/entities/question'
 import { Slug } from '../../enterprise/entities/value-objects/slug'
-import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { GetQuestionBySlugUseCase } from './get-question-by-slug'
 
 let inMemoryQuestionRepository: InMemoryQuestionsRepository
 let sut: GetQuestionBySlugUseCase
@@ -13,10 +11,7 @@ describe('Get question by slug', () => {
     sut = new GetQuestionBySlugUseCase(inMemoryQuestionRepository)
   })
   it('should be able to get a question by slug', async () => {
-    const newQuestion = Question.create({
-      authorId: new UniqueEntityID('id-01'),
-      title: 'Question title',
-      content: 'Answer content',
+    const newQuestion = makeQuestion({
       slug: Slug.create('question-title'),
     })
 
