@@ -1,11 +1,7 @@
-import { makeQuestion } from 'test/factories/make-question'
-import { InMemoryQuestionsRepository } from 'test/repositories/in-memory-questions-repository'
-import { Slug } from '../../enterprise/entities/value-objects/slug'
-import { FetchRecentQuestionsUseCase } from './fetch-recent-questions'
-import { FetchQuestionCommentsUseCase } from './fetch-question-comment'
-import { InMemoryQuestionCommentRepository } from 'test/repositories/in-memory-question-comment-repository'
-import { makeQuestionComment } from 'test/factories/make-question-comment'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { makeQuestionComment } from 'test/factories/make-question-comment'
+import { InMemoryQuestionCommentRepository } from 'test/repositories/in-memory-question-comment-repository'
+import { FetchQuestionCommentsUseCase } from './fetch-question-comment'
 
 let inMemoryQuestionCommentRepository: InMemoryQuestionCommentRepository
 let sut: FetchQuestionCommentsUseCase
