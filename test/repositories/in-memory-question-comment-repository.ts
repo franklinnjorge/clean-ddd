@@ -24,6 +24,17 @@ export class InMemoryQuestionCommentRepository
     return questionComment
   }
 
+  async findManyByQuestionCommentId(
+    questionId: string,
+    { page }: PaginationParams,
+  ) {
+    const questionComment = this.items
+      .filter((item) => item.questionId.toString() === questionId)
+      .slice((page - 1) * 20, page * 20)
+
+    return questionComment
+  }
+
   async delete(questionComment: QuestionComment): Promise<void> {
     const findIndex = this.items.findIndex(
       (items) => items.id === questionComment.id,
