@@ -1,3 +1,4 @@
+import { PaginationParams } from '@/core/repositories/pagination'
 import { QuestionsRepository } from '@/domain/forum/application/repositories/question-repository'
 import { Question } from '@/domain/forum/enterprise/entities/question'
 
@@ -28,6 +29,12 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
     }
 
     return question
+  }
+
+  async findMany({ page }: PaginationParams) {
+    return this.items
+      .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
+      .slice((page - 1) * 20, page * 20)
   }
 
   async delete(question: Question): Promise<void> {
