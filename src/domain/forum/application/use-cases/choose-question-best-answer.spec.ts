@@ -55,11 +55,12 @@ describe('ChooseQuestionBestAnswerUseCase', () => {
       authorId: question.authorId.toString(),
     })
 
-    expect(() => {
-      return sut.execute({
-        answerId: answer.id.toString(),
-        authorId: 'author-2',
-      })
-    }).rejects.toBeInstanceOf(Error)
+    const result = await sut.execute({
+      answerId: answer.id.toString(),
+      authorId: 'author-2',
+    })
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(Error)
   })
 })

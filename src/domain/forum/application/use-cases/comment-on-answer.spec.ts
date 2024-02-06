@@ -19,14 +19,16 @@ describe('CommentOnAnswerUseCase', () => {
     const answer = makeAnswer()
     await inMemorAnswerRepository.create(answer)
 
-    const { answerComment } = await sut.execute({
+    const result = await sut.execute({
       authorId: 'id-01',
       answerId: answer.id.toString(),
       content: 'Answer content',
     })
 
+    expect(result.isRight()).toBe(true)
+
     expect(inMemoryAnswerCommentRepository.items[0].content).toEqual(
-      answerComment.content,
+      result.value?.answerComment?.content,
     )
   })
 })
