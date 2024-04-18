@@ -1,7 +1,7 @@
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { QuestionAttachment } from '@/domain/forum/enterprise/entities/question-attachment'
 
-export function makeQuestionAttachmentComment(
+export function makeQuestionAttachment(
   override: Partial<QuestionAttachment> = {},
   id?: UniqueEntityID,
 ) {

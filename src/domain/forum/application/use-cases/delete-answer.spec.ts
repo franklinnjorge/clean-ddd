@@ -1,15 +1,22 @@
-import { DeleteAnswerUseCase } from './delete-answer'
-import { Slug } from '../../enterprise/entities/value-objects/slug'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
-import { InMemoryAnswerRepository } from 'test/repositories/in-memory-answer-repository'
 import { makeAnswer } from 'test/factories/make-answer'
+import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments-repository'
+import { InMemoryAnswerRepository } from 'test/repositories/in-memory-answer-repository'
+import { DeleteAnswerUseCase } from './delete-answer'
 import { NotAllowedError } from './errors/not-allowed-error'
 
+let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
 let inMemoryAnswersRepository: InMemoryAnswerRepository
 let sut: DeleteAnswerUseCase
+
 describe('DeleteAnswerUseCase', () => {
   beforeEach(() => {
-    inMemoryAnswersRepository = new InMemoryAnswerRepository()
+    inMemoryAnswerAttachmentsRepository =
+      new InMemoryAnswerAttachmentsRepository()
+    inMemoryAnswersRepository = new InMemoryAnswerRepository(
+      inMemoryAnswerAttachmentsRepository,
+    )
+
     sut = new DeleteAnswerUseCase(inMemoryAnswersRepository)
   })
   it('should be able to delete a answer', async () => {
