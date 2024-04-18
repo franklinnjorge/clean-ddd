@@ -15,10 +15,10 @@ export class InMemoryAnswerAttachmentsRepository
   }
 
   async deleteManyByAnswerId(answerId: string): Promise<void> {
-    const answerAttachment = this.items.filter(
+    const answerAttachments = this.items.filter(
       (item) => item.answerId.toString() !== answerId,
     )
 
-    this.items = answerAttachment
+    this.items = answerAttachments
   }
 }
