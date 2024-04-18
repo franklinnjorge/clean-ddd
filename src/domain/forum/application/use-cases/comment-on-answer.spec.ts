@@ -2,33 +2,40 @@ import { makeAnswer } from 'test/factories/make-answer'
 import { CommentOnAnswerUseCase } from './comment-on-answer'
 import { InMemoryAnswerRepository } from 'test/repositories/in-memory-answer-repository'
 import { InMemoryAnswerCommentRepository } from 'test/repositories/in-memory-answer-comment-repository'
+import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments-repository'
 
-let inMemorAnswerRepository: InMemoryAnswerRepository
-let inMemoryAnswerCommentRepository: InMemoryAnswerCommentRepository
+let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
+let inMemoryAnswersRepository: InMemoryAnswerRepository
+let inMemoryAnswerCommentsRepository: InMemoryAnswerCommentRepository
 let sut: CommentOnAnswerUseCase
-describe('CommentOnAnswerUseCase', () => {
+
+describe('Comment on Answer', () => {
   beforeEach(() => {
-    inMemorAnswerRepository = new InMemoryAnswerRepository()
-    inMemoryAnswerCommentRepository = new InMemoryAnswerCommentRepository()
+    inMemoryAnswerAttachmentsRepository =
+      new InMemoryAnswerAttachmentsRepository()
+    inMemoryAnswersRepository = new InMemoryAnswerRepository(
+      inMemoryAnswerAttachmentsRepository,
+    )
+    inMemoryAnswerCommentsRepository = new InMemoryAnswerCommentRepository()
+
     sut = new CommentOnAnswerUseCase(
-      inMemorAnswerRepository,
-      inMemoryAnswerCommentRepository,
+      inMemoryAnswersRepository,
+      inMemoryAnswerCommentsRepository,
     )
   })
   it('should be able to comment on answer', async () => {
     const answer = makeAnswer()
-    await inMemorAnswerRepository.create(answer)
 
-    const result = await sut.execute({
-      authorId: 'id-01',
+    await inMemoryAnswersRepository.create(answer)
+
+    await sut.execute({
       answerId: answer.id.toString(),
-      content: 'Answer content',
+      authorId: answer.authorId.toString(),
+      content: 'Comentário teste',
     })
 
-    expect(result.isRight()).toBe(true)
-
-    expect(inMemoryAnswerCommentRepository.items[0].content).toEqual(
-      result.value?.answerComment?.content,
+    expect(inMemoryAnswerCommentsRepository.items[0].content).toEqual(
+      'Comentário teste',
     )
   })
 })

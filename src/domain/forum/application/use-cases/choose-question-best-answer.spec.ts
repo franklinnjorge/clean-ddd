@@ -6,17 +6,31 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { ChooseQuestionBestAnswerUseCase } from './choose-question-best-answer'
 import { InMemoryAnswerRepository } from 'test/repositories/in-memory-answer-repository'
 import { makeAnswer } from 'test/factories/make-answer'
+import { InMemoryQuestionAttachmentRepository } from 'test/repositories/in-memory-question-attachments-repository'
+import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments-repository'
 
+let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
+let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentRepository
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
-let inMemoryAnswerRepository: InMemoryAnswerRepository
+let inMemoryAnswersRepository: InMemoryAnswerRepository
 let sut: ChooseQuestionBestAnswerUseCase
+
 describe('ChooseQuestionBestAnswerUseCase', () => {
   beforeEach(() => {
-    inMemoryQuestionsRepository = new InMemoryQuestionsRepository()
-    inMemoryAnswerRepository = new InMemoryAnswerRepository()
+    inMemoryAnswerAttachmentsRepository =
+      new InMemoryAnswerAttachmentsRepository()
+    inMemoryQuestionAttachmentsRepository =
+      new InMemoryQuestionAttachmentRepository()
+    inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
+      inMemoryQuestionAttachmentsRepository,
+    )
+    inMemoryAnswersRepository = new InMemoryAnswerRepository(
+      inMemoryAnswerAttachmentsRepository,
+    )
+
     sut = new ChooseQuestionBestAnswerUseCase(
       inMemoryQuestionsRepository,
-      inMemoryAnswerRepository,
+      inMemoryAnswersRepository,
     )
   })
 
@@ -28,7 +42,7 @@ describe('ChooseQuestionBestAnswerUseCase', () => {
     })
 
     await inMemoryQuestionsRepository.create(question)
-    await inMemoryAnswerRepository.create(answer)
+    await inMemoryAnswersRepository.create(answer)
 
     await sut.execute({
       answerId: answer.id.toString(),
@@ -48,7 +62,7 @@ describe('ChooseQuestionBestAnswerUseCase', () => {
     })
 
     await inMemoryQuestionsRepository.create(question)
-    await inMemoryAnswerRepository.create(answer)
+    await inMemoryAnswersRepository.create(answer)
 
     await sut.execute({
       answerId: answer.id.toString(),
