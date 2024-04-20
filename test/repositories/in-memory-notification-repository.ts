@@ -1,0 +1,15 @@
+import { PaginationParams } from '@/core/repositories/pagination'
+import { NotificationsRepository } from '@/domain/notification/application/repositories/notifications-repository'
+import { Notification } from '@/domain/notification/enterprise/entities/notification'
+
+export class InMemoryNotificationsRepository
+  implements NotificationsRepository
+{
+  public items: Notification[] = []
+
+  constructor() {}
+
+  async create(notification: Notification) {
+    this.items.push(notification)
+  }
+}
