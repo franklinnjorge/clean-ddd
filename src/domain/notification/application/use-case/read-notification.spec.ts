@@ -11,7 +11,7 @@ describe('ReadNotificationUseCase', () => {
     inMemoryNotificationRepository = new InMemoryNotificationsRepository()
     sut = new ReadNotificationUseCase(inMemoryNotificationRepository)
   })
-  it('should be able to read an notification', async () => {
+  it('should be able to read a notification', async () => {
     const notification = makeNotification()
     inMemoryNotificationRepository.create(notification)
 
@@ -27,10 +27,9 @@ describe('ReadNotificationUseCase', () => {
   })
 
   it('should not be able to read a notification from another user', async () => {
-    const notification = makeNotification(
-      { recipientId: new UniqueEntityID('author-1') },
-      new UniqueEntityID('notification-1'),
-    )
+    const notification = makeNotification({
+      recipientId: new UniqueEntityID('author-1'),
+    })
 
     await inMemoryNotificationRepository.create(notification)
 

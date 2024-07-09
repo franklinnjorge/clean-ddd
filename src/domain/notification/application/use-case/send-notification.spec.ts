@@ -4,12 +4,12 @@ import { SendNotificationUseCase } from './send-notification'
 
 let inMemoryNotificationRepository: InMemoryNotificationsRepository
 let sut: SendNotificationUseCase
-describe('SendNotificationUseCase', () => {
+describe('Send Notification', () => {
   beforeEach(() => {
     inMemoryNotificationRepository = new InMemoryNotificationsRepository()
     sut = new SendNotificationUseCase(inMemoryNotificationRepository)
   })
-  it('should be able to send an notification', async () => {
+  it('should be able to send a notification', async () => {
     const result = await sut.execute({
       recipientId: 'id-01',
       content: 'notification content',
