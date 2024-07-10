@@ -1,8 +1,8 @@
+import { DomainEvents } from '@/core/events/domain-events'
 import { PaginationParams } from '@/core/repositories/pagination'
 import { AnswerAttachmentsRepository } from '@/domain/forum/application/repositories/answer-attachments-repository'
 import { AnswersRepository } from '@/domain/forum/application/repositories/answer-repository'
 import { Answer } from '@/domain/forum/enterprise/entities/answer'
-import { Question } from '@/domain/forum/enterprise/entities/question'
 
 export class InMemoryAnswerRepository implements AnswersRepository {
   public items: Answer[] = []
@@ -31,6 +31,8 @@ export class InMemoryAnswerRepository implements AnswersRepository {
 
   async create(answer: Answer) {
     this.items.push(answer)
+
+    DomainEvents.dispatchEventsForAggregate(answer.id)
   }
 
   async save(answer: Answer) {
@@ -39,6 +41,7 @@ export class InMemoryAnswerRepository implements AnswersRepository {
     )
 
     this.items[findIndex] = answer
+    DomainEvents.dispatchEventsForAggregate(answer.id)
   }
 
   async delete(answer: Answer) {
